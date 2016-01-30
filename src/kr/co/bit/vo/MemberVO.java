@@ -28,19 +28,28 @@ public class MemberVO {
 		this.password = password;
 	}
 	public String getPhone() {
-		return phone;
+		if (phone != null)
+			return phone;
+		else 
+			return "";
 	}
 	public void setPhone(String phone) {
 		this.phone = phone;
 	}
 	public String getEmail() {
-		return email;
+		if (email != null)
+			return email;
+		else 
+			return "";
 	}
 	public void setEmail(String email) {
 		this.email = email;
 	}
 	public String getRegDate() {
-		return regDate;
+		if (regDate != null)
+			return regDate;
+		else 
+			return "";
 	}
 	public void setRegDate(String regDate) {
 		this.regDate = regDate;
