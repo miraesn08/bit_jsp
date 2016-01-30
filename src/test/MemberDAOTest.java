@@ -8,7 +8,7 @@ public class MemberDAOTest {
 	public static void main(String[] args) {
 		MemberVO member = new MemberVO();
 		MemberDAO dao = new MemberDAO();
-		
+/*		
 		// insert
 		member.setId("test11");
 		member.setPassword("444");
@@ -41,7 +41,9 @@ public class MemberDAOTest {
 		} else {
 			System.out.println("delete fail");
 		}
+*/
 		
+		System.out.println(dao.getMember("test"));
 
 	}
 
