@@ -1,5 +1,7 @@
 package test;
 
+import java.util.ArrayList;
+
 import kr.co.bit.dao.MemberDAO;
 import kr.co.bit.vo.MemberVO;
 
@@ -43,7 +45,13 @@ public class MemberDAOTest {
 		}
 */
 		
-		System.out.println(dao.getMember("test"));
+		// System.out.println(dao.getMember("test"));
+		
+		// member list
+		ArrayList<MemberVO> list = dao.getMemberList();
+		for (int i = 0; i < list.size(); i++) {
+			System.out.println(list.get(i));
+		}
 
 	}
 

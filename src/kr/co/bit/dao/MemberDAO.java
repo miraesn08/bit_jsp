@@ -3,6 +3,7 @@ package kr.co.bit.dao;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
+import java.util.ArrayList;
 
 import kr.co.bit.common.DBUtil;
 import kr.co.bit.vo.MemberVO;
@@ -44,7 +45,41 @@ public class MemberDAO {
 		
 		return member;
 	}
-	
+
+	public ArrayList<MemberVO> getMemberList() {
+		ArrayList<MemberVO> memberList = new ArrayList<MemberVO>();
+		
+		Connection conn = null;
+		PreparedStatement ps = null;
+		ResultSet rs = null;
+		
+		try {
+			conn = DBUtil.getConnection();
+			String sql = "select * from member";
+			ps = conn.prepareStatement(sql);
+			
+			rs = ps.executeQuery();
+			while (rs.next()) {
+				MemberVO member = new MemberVO();
+				
+				member.setId(rs.getString(1));
+				member.setPassword(rs.getString(2));
+				member.setName(rs.getString(3));
+				member.setPhone(rs.getString(4));
+				member.setEmail(rs.getString(5));
+				member.setRegDate(rs.getString(6));
+				
+				memberList.add(member);
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+		} finally {
+			DBUtil.close(conn, ps, rs);
+		}
+		
+		return memberList;
+	}
+
 	public boolean setMember(MemberVO member) {
 		boolean returnValue = false;
 
