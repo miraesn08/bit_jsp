@@ -1,10 +1,9 @@
 package kr.co.bit.dao;
 
 import java.sql.Connection;
-import java.sql.DriverManager;
 import java.sql.PreparedStatement;
-import java.sql.SQLException;
 
+import kr.co.bit.common.DBUtil;
 import kr.co.bit.vo.MemberVO;
 
 //VO  : Value Object
@@ -20,10 +19,8 @@ public class MemberDAO {
 		PreparedStatement ps = null;
 		
 		try {
-			// 3. 드라이버 로딩
-			Class.forName(DbUtil.DRIVER_NAME);
-			// 4. 접속
-			conn = DriverManager.getConnection(DbUtil.URL, DbUtil.USER, DbUtil.PASSWORD);
+			// 3. 드라이버 로딩, 4. 접속
+			conn = DBUtil.getConnection();
 			// 5. 쿼리
 			String sql = "insert into member values (?,?,?,?,?,sysdate)";
 			ps = conn.prepareStatement(sql);
@@ -35,23 +32,11 @@ public class MemberDAO {
 			// 6.쿼리 실행
 			returnValue = (ps.executeUpdate() == 1);
 		} catch(Exception e) {
+			// exception 처리를 blank로 두면 절대 안됨
 			e.printStackTrace();
 		} finally {
 			// 2.선언한 객체 닫기
-			if (ps != null) {
-				try {
-					ps.close();
-				} catch (SQLException e) {
-					e.printStackTrace();
-				}
-			}
-			if (conn != null) {
-				try {
-					conn.close();
-				} catch (SQLException e) {
-					e.printStackTrace();
-				}				
-			}
+			DBUtil.close(conn, ps);
 		}
 		
 		return returnValue;
@@ -59,35 +44,20 @@ public class MemberDAO {
 	
 	public boolean deleteMember(String id) {
 		boolean returnValue = false;
+		
+		Connection conn = null;
+		PreparedStatement ps = null;
 
-		Connection conn = DbUtil.getConnect();
-		if (conn != null) {
-			PreparedStatement ps = null;
-			
-			try {
-				String sql = "delete from member where id = ?";
-				ps = conn.prepareStatement(sql);
-				ps.setString(1, id);
-				returnValue = (ps.executeUpdate() > 0);
-			} catch(Exception e) {
-				e.printStackTrace();
-			} finally {
-				// 2.선언한 객체 닫기
-				if (ps != null) {
-					try {
-						ps.close();
-					} catch (SQLException e) {
-						e.printStackTrace();
-					}
-				}
-				if (conn != null) {
-					try {
-						conn.close();
-					} catch (SQLException e) {
-						e.printStackTrace();
-					}				
-				}
-			}
+		try {
+			conn = DBUtil.getConnection(); 
+			String sql = "delete from member where id = ?";
+			ps = conn.prepareStatement(sql);
+			ps.setString(1, id);
+			returnValue = (ps.executeUpdate() > 0);
+		} catch(Exception e) {
+			e.printStackTrace();
+		} finally {
+			DBUtil.close(conn, ps);
 		}
 		
 		return returnValue;
@@ -96,16 +66,11 @@ public class MemberDAO {
 	public boolean updateMember(MemberVO member) {
 		boolean returnValue = false;
 
-		// 1. 선언(필요한 객체...)
 		Connection conn = null;
 		PreparedStatement ps = null;
 		
 		try {
-			// 3. 드라이버 로딩
-			Class.forName(DbUtil.DRIVER_NAME);
-			// 4. 접속
-			conn = DriverManager.getConnection(DbUtil.URL, DbUtil.USER, DbUtil.PASSWORD);
-			// 5. 쿼리
+			conn = DBUtil.getConnection();
 			String sql = "update member set password=?,name=?,phone=?,email=? where id=?";
 			ps = conn.prepareStatement(sql);
 			ps.setString(1, member.getPassword());
@@ -118,21 +83,7 @@ public class MemberDAO {
 		} catch(Exception e) {
 			e.printStackTrace();
 		} finally {
-			// 2.선언한 객체 닫기
-			if (ps != null) {
-				try {
-					ps.close();
-				} catch (SQLException e) {
-					e.printStackTrace();
-				}
-			}
-			if (conn != null) {
-				try {
-					conn.close();
-				} catch (SQLException e) {
-					e.printStackTrace();
-				}				
-			}
+			DBUtil.close(conn, ps);
 		}
 		
 		return returnValue;
