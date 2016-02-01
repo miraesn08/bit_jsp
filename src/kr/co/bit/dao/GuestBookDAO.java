@@ -48,6 +48,7 @@ public class GuestBookDAO {
 		try {
 			conn = DBUtil.getConnection();
 			
+			//String sql = "select no,nvl(name,''),nvl(id,''),nvl(title,''),nvl(content,''),reg_date from guestbook where no = ?";
 			String sql = "select * from guestbook where no = ?";
 			ps = conn.prepareStatement(sql);
 			ps.setInt(1, no);

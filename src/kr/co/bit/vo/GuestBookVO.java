@@ -21,7 +21,10 @@ public class GuestBookVO {
 		this.name = name;
 	}
 	public String getId() {
-		return id;
+		if (id != null)
+			return id;
+		else
+			return "";
 	}
 	public void setId(String id) {
 		this.id = id;
