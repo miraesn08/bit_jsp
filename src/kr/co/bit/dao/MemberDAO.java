@@ -11,7 +11,9 @@ import kr.co.bit.vo.MemberVO;
 
 //VO  : Value Object
 //DTO : Data Transfer Object
-//DAO : Data Access Object 
+//DAO : Data Access Object
+
+// ** OOP 설계 : "Beauty and Beast" animation에서 야수성을 방문하는 장면을 참고
 public class MemberDAO {
 	
 	public MemberVO getMember(String id) {
@@ -47,7 +49,16 @@ public class MemberDAO {
 		return member;
 	}
 
+	// 복수의 자료는 List와 같은 자료 구조를 활요하고  generic(제네릭) 사용
 	public List<MemberVO> getMemberList() {
+		return getMemberListByField("", "");
+	}
+	
+	public List<MemberVO> getMemberListByField(String fieldName, String searchValue) {
+		return getMemberListByField(fieldName, searchValue, false);
+	}
+
+	public List<MemberVO> getMemberListByField(String fieldName, String searchValue, boolean isExact) {
 		List<MemberVO> memberList = new ArrayList<MemberVO>();
 		
 		Connection conn = null;
@@ -57,7 +68,17 @@ public class MemberDAO {
 		try {
 			conn = DBUtil.getConnection();
 			String sql = "select * from member";
+			if (fieldName.length() > 0 ) {
+				if (isExact) {
+					sql += " where " + fieldName + " = ?";
+				} else {
+					sql += " where " + fieldName + " like '%" + searchValue + "%'";
+				}
+			}
 			ps = conn.prepareStatement(sql);
+			if (isExact) {
+				ps.setString(1, searchValue);
+			}
 			
 			rs = ps.executeQuery();
 			while (rs.next()) {
@@ -79,6 +100,10 @@ public class MemberDAO {
 		}
 		
 		return memberList;
+	}
+
+	public List<MemberVO> getMemberListByName(String searchName) {
+		return getMemberListByField("name", searchName);
 	}
 
 	public boolean setMember(MemberVO member) {

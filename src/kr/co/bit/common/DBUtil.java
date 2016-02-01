@@ -10,6 +10,7 @@ public class DBUtil {
 
 	// 모든 수정 후에는 반드시 test할 것.
 	// 1. db 접속(method overloading)
+	//   note: static, overloading
 	public static Connection getConnection() throws Exception {
 		String url = "jdbc:oracle:thin:@localhost:1521:XE";	
 		String user = "bit";
