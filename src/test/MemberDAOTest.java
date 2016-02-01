@@ -45,16 +45,18 @@ public class MemberDAOTest {
 		}
 */
 		
-		// System.out.println(dao.getMember("test"));
+		// member
+		System.out.println("> get member ------------------------------");
+		System.out.println(dao.getMember("carami"));
 		
 		// member list
 		List<MemberVO> memberList;
-		System.out.println("list all ------------------------------");
+		System.out.println("> list all ------------------------------");
 		memberList = dao.getMemberList();
 		for (MemberVO vo : memberList) {
 			System.out.println(vo);
 		}
-		System.out.println("list by name ------------------------------");
+		System.out.println("> list by name ------------------------------");
 		memberList = dao.getMemberListByName("경");
 		for (MemberVO vo : memberList) {
 			System.out.println(vo);

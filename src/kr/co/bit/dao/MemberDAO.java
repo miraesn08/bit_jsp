@@ -18,32 +18,12 @@ public class MemberDAO {
 	
 	public MemberVO getMember(String id) {
 		MemberVO member = null;
-		// 1.선언
-		Connection conn = null;
-		PreparedStatement ps = null;
-		ResultSet rs = null;
+		List<MemberVO> memberList = getMemberListByField("id", id, true);
 		
-		try {
-			conn = DBUtil.getConnection();
-			String sql = "select * from member where id = ?";
-			// select * --> column 순서는 table column 순서대로
-			ps = conn.prepareStatement(sql);
-			ps.setString(1, id);
-			
-			rs = ps.executeQuery();
-			if (rs.next()) {
-				member = new MemberVO();
-				member.setId(rs.getString(1));
-				member.setPassword(rs.getString(2));
-				member.setName(rs.getString(3));
-				member.setPhone(rs.getString(4));
-				member.setEmail(rs.getString(5));
-				member.setRegDate(rs.getString(6));
+		if (memberList != null) {
+			if (memberList.size() == 1) {
+				member = memberList.get(0);
 			}
-		} catch (Exception e) {
-			e.printStackTrace();
-		} finally {
-			DBUtil.close(conn, ps, rs);
 		}
 		
 		return member;
