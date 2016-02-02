@@ -1,5 +1,6 @@
 <%@page import="kr.co.bit.dao.MemberDAO"%>
 <%@page import="kr.co.bit.vo.MemberVO"%>
+<%@page import="kr.co.bit.common.LoginUtil" %>
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
@@ -33,6 +34,7 @@
 	// insert table
 	MemberDAO dao = new MemberDAO();
 	if (dao.setMember(member)) {
+		LoginUtil.setLogin(member, response);
 %>
 <%= member.getName() %>님이 회원가입에 성공하셨습니다.
 <%
@@ -49,7 +51,8 @@
 이름 : <%=nameValue %><br>
 이메일 : <%=emailValue %><br>
 전화번호 : <%=phoneValue %><br>
-
+<hr>
+<input type="button" value="확인" onclick="location.href='../day03/list.jsp'">
 </body>
 </html>
 <%
