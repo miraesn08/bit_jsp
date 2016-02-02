@@ -20,7 +20,7 @@
 			if (member != null) {
 				if (pw.equals(member.getPassword())) {
 					//System.out.println(member.getPassword());
-					LoginUtil.setLogin(member, response);
+					LoginUtil.setLogin(member, session);
 					isLoginStateCode = stateLoginOk;
 				} else {
 					isLoginStateCode = stateIncorrectPassword;
@@ -34,7 +34,7 @@
 	if (isLoginStateCode == stateNoValue) {
 	} else if (isLoginStateCode == stateNotMember) {
 %>
-		가입되지 않은 회원 입니다. 회원 가입 하세요. <a href="joinForm.jsp">회원가입으로 가기</a>	 
+		가입되지 않은 회원 입니다. 회원 가입 하세요. <a href="../member/joinForm.jsp">회원가입으로 가기</a>	 
 <%		
 	} else if (isLoginStateCode == stateIncorrectPassword) {
 %>

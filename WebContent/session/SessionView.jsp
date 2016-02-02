@@ -1,3 +1,4 @@
+<%@page import="kr.co.bit.vo.MemberVO"%>
 <%@page import="java.util.Enumeration"%>
 <%@ page import="java.net.URLDecoder" %>
 <%@ page language="java" contentType="text/html; charset=UTF-8"
@@ -13,7 +14,13 @@
 	Enumeration e = session.getAttributeNames();
 	while (e.hasMoreElements()) {
 		String key = (String)e.nextElement();
-		String value = (String)session.getAttribute(key);
+		Object obj = session.getAttribute(key);
+		String value = "";
+		if (obj instanceof MemberVO) {
+			value = ((MemberVO)obj).toString();
+		} else {
+			value = (String)obj;
+		}
 %>
 <p>
 	<%=key %> : <%=value %>

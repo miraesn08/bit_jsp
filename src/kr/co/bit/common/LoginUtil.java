@@ -7,6 +7,7 @@ import java.net.URLEncoder;
 import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 
 import kr.co.bit.vo.MemberVO;
 
@@ -29,6 +30,20 @@ public class LoginUtil {
  		return isLogin;
  	}
 
+ 	public static boolean isLogin(HttpSession session) {
+ 		boolean isLogin = false;
+
+ 		MemberVO member = (MemberVO)session.getAttribute(LoginUtil.IdName);
+ 		if (member != null) {
+ 	 		String idValue = member.getId();
+ 	 		if (idValue != null && idValue.length() > 0) {
+ 	 			isLogin = true;
+ 	 		}
+ 		}
+
+ 		return isLogin;
+ 	}
+ 	
  	public static void setLogin(MemberVO member, HttpServletResponse response) throws UnsupportedEncodingException {
  		Cookie cookie = new Cookie(LoginUtil.IdName, URLEncoder.encode(member.getId(), "utf-8"));
  		cookie.setPath("/");
@@ -36,11 +51,19 @@ public class LoginUtil {
  		response.addCookie(cookie);									
  	}
 
+ 	public static void setLogin(MemberVO member, HttpSession session) throws UnsupportedEncodingException {
+ 		session.setAttribute(LoginUtil.IdName, member);
+ 	}
+
  	public static void setLogout(HttpServletResponse response) throws UnsupportedEncodingException {
  		Cookie cookie = new Cookie(LoginUtil.IdName, "");
  		cookie.setPath("/");
  		cookie.setMaxAge(0);
  		response.addCookie(cookie);									
+ 	}
+
+ 	public static void setLogout(HttpSession session) throws UnsupportedEncodingException {
+ 		session.removeAttribute(LoginUtil.IdName);									
  	}
 
  	public static String getLoginId(HttpServletRequest request) throws UnsupportedEncodingException {
@@ -55,5 +78,15 @@ public class LoginUtil {
  		}
 
  		return idValue;
+ 	}
+ 	
+ 	public static String getLoginId(HttpSession session) throws UnsupportedEncodingException {
+ 		MemberVO member = (MemberVO)session.getAttribute(LoginUtil.IdName);
+ 	
+ 		if (member != null) {
+ 			return member.getId();
+ 		} else {
+ 			return "";
+ 		}
  	}
 }

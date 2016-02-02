@@ -34,7 +34,7 @@
 	// insert table
 	MemberDAO dao = new MemberDAO();
 	if (dao.setMember(member)) {
-		LoginUtil.setLogin(member, response);
+		LoginUtil.setLogin(member, session);
 %>
 <%= member.getName() %>님이 회원가입에 성공하셨습니다.
 <%

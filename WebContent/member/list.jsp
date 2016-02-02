@@ -9,8 +9,8 @@
 	MemberVO loginMember = null;
 	String loginId = "";
 	
-	if (LoginUtil.isLogin(request)) {
-		loginId = LoginUtil.getLoginId(request);
+	if (LoginUtil.isLogin(session)) {
+		loginId = LoginUtil.getLoginId(session);
 		if (loginId.length() > 0) {
 			loginMember = (new MemberDAO()).getMember(loginId);
 			if (loginMember != null) {
