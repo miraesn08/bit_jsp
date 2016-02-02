@@ -8,5 +8,5 @@
 		LoginUtil.setLogout(response);
 	}
 	
-	response.sendRedirect("loginForm.jsp");
+	response.sendRedirect("../index.jsp");
 %>

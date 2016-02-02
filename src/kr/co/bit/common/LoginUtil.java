@@ -18,7 +18,9 @@ public class LoginUtil {
 
  		Cookie[] cookies = request.getCookies();
  		for (Cookie cookie : cookies) {
- 			if (cookie.getName().equals(LoginUtil.IdName)) {
+ 			if (LoginUtil.IdName.equals(cookie.getName())) {
+ 				// null pointer exception 방지를 위한 coding
+ 				// "loginUserId"는 문자열이 항상 있으므로
  				isLogin = true;
  				break;
  			}

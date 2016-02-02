@@ -7,7 +7,7 @@
 <html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-<title>Insert title here</title>
+<title>회원 등록</title>
 </head>
 <body>
 <%
@@ -52,7 +52,7 @@
 이메일 : <%=emailValue %><br>
 전화번호 : <%=phoneValue %><br>
 <hr>
-<input type="button" value="확인" onclick="location.href='../day03/list.jsp'">
+<input type="button" value="확인" onclick="location.href='list.jsp'">
 </body>
 </html>
 <%

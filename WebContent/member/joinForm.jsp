@@ -41,7 +41,7 @@
 	</div>
 	<div class="item">
 		<input type="submit" value="회원가입">
-		<input type="reset" value="취소">
+		<input type="reset" value="취소" onclick="window.history.back()">
 	</div>
 </form>
 </body>
