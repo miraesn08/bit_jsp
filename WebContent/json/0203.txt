@@ -5,34 +5,34 @@ class Member{
 ------------------------------ Member class
 
 
-{"name":"í™ê¸¸ë™","age":50}
+{"name":"È«±æµ¿","age":50}
 
 Member m = new Member();
-m.name = "í™ê¸¸ë™";
+m.name = "È«±æµ¿";
 m.age = 50;
 
 ---------------------------------------
 
-ë³´í†µ ìë°”ëŠ” ë¼ì´ë¸ŒëŸ¬ë¦¬ê°€ jaríŒŒì¼ë¡œ ë§Œë“¬.
-jaríŒŒì¼ì•ˆì—ëŠ” ì—¬ëŸ¬ê°œì˜ class, interfaceë“±ì´ ë“¤ì–´ìˆë‹¤.
+º¸Åë ÀÚ¹Ù´Â ¶óÀÌºê·¯¸®°¡ jarÆÄÀÏ·Î ¸¸µë.
+jarÆÄÀÏ¾È¿¡´Â ¿©·¯°³ÀÇ class, interfaceµîÀÌ µé¾îÀÖ´Ù.
 
-gsonì„ ì‚¬ìš©í•˜ê¸°ë¡œ ê²°ì •. ë‹¤ìš´ë¡œë“œë¥¼ í•œë‹¤. gson-2.5.jar
+gsonÀ» »ç¿ëÇÏ±â·Î °áÁ¤. ´Ù¿î·Îµå¸¦ ÇÑ´Ù. gson-2.5.jar
 
-1) ì´í´ë¦½ìŠ¤ ë‹¤ì´ë‚˜ë¯¹ ì›¹ í”„ë¡œì íŠ¸ì— ë‹¤ë¥¸ì‚¬ëŒì´ ë§Œë“  jaríŒŒì¼ì„ ì¶”ê°€í•˜ì—¬
-ì‚¬ìš©í•˜ë ¤ë©´ ì–´ë–»ê²Œ í•˜ëŠ”ê°€?
+1) ÀÌÅ¬¸³½º ´ÙÀÌ³ª¹Í À¥ ÇÁ·ÎÁ§Æ®¿¡ ´Ù¸¥»ç¶÷ÀÌ ¸¸µç jarÆÄÀÏÀ» Ãß°¡ÇÏ¿©
+»ç¿ëÇÏ·Á¸é ¾î¶»°Ô ÇÏ´Â°¡?
 
-WebContent/WEB-INF/lib/ í•´ë‹¹ í´ë”ì— ë³µì‚¬.
+WebContent/WEB-INF/lib/ ÇØ´ç Æú´õ¿¡ º¹»ç.
 
-WEB-INF/libì— ë³µì‚¬í•˜ë©´ ì›¹ ì–´í”Œë¦¬ì¼€ì´ì…˜ì—ì„œëŠ” ì¸ì‹í•˜ëŠ”ë°, Java Applicationì—ì„œëŠ” ì¸ì‹ì´ ì•ˆëœë‹¤.
+WEB-INF/lib¿¡ º¹»çÇÏ¸é À¥ ¾îÇÃ¸®ÄÉÀÌ¼Ç¿¡¼­´Â ÀÎ½ÄÇÏ´Âµ¥, Java Application¿¡¼­´Â ÀÎ½ÄÀÌ ¾ÈµÈ´Ù.
 
- í”„ë¡œì íŠ¸ ì„ íƒí›„ ìš°ì¸¡ë²„íŠ¼í´ë¦­ -> properties ì„ íƒ
-Java Build Path - Libraries ì— gson-2.5.jarë¥¼ ì¶”ê°€  (add Jars...)
+ ÇÁ·ÎÁ§Æ® ¼±ÅÃÈÄ ¿ìÃø¹öÆ°Å¬¸¯ -> properties ¼±ÅÃ
+Java Build Path - Libraries ¿¡ gson-2.5.jar¸¦ Ãß°¡  (add Jars...)
 
 
-2) ìë°”ê°ì²´(DTO or VO) ----> jsonìœ¼ë¡œ ë§Œë“œëŠ” ë¼ì´ë¸ŒëŸ¬ë¦¬ë¥¼ ì°¾ëŠ”ë‹¤.
+2) ÀÚ¹Ù°´Ã¼(DTO or VO) ----> jsonÀ¸·Î ¸¸µå´Â ¶óÀÌºê·¯¸®¸¦ Ã£´Â´Ù.
 
-3) Memberê°ì²´ë¥¼ jsonë¬¸ìì—´ë¡œ ë§Œë“œëŠ” mainë©”ì†Œë“œë¥¼ ê°€ì§„ í´ë˜ìŠ¤ë¥¼
-ì‘ì„±í•œë‹¤. ê·¸ë˜ì„œ ë¼ì´ë¸ŒëŸ¬ë¦¬ë¥¼ í…ŒìŠ¤íŠ¸í•œë‹¤.
+3) Member°´Ã¼¸¦ json¹®ÀÚ¿­·Î ¸¸µå´Â main¸Ş¼Òµå¸¦ °¡Áø Å¬·¡½º¸¦
+ÀÛ¼ºÇÑ´Ù. ±×·¡¼­ ¶óÀÌºê·¯¸®¸¦ Å×½ºÆ®ÇÑ´Ù.
 
 
 package exam;
@@ -40,15 +40,15 @@ package exam;
 import com.google.gson.Gson;
 
 // http://1004lucifer.blogspot.kr/2015/04/javagson-gson-java-json.html 
-// ë¥¼ ì°¸ê³ í•˜ì—¬ ì‘ì„±í•˜ì˜€ìŒ.
+// ¸¦ Âü°íÇÏ¿© ÀÛ¼ºÇÏ¿´À½.
 public class MemberJSONExam {
 
 	public static void main(String[] args) {
 		Member m1 = new Member();
-		m1.setName("í™ê¸¸ë™");
+		m1.setName("È«±æµ¿");
 		m1.setAge(50);
 		
-		// m1ì°¸ì¡°ë³€ìˆ˜ê°€ ê°€ë¦¬í‚¤ëŠ” ì¸ìŠ¤í„´ìŠ¤ë¥¼ jsonë¬¸ìì—´ë¡œ ë§Œë“ ë‹¤. GSonë¼ì´ë¸ŒëŸ¬ë¦¬ë¥¼ ì´ìš©í•œë‹¤.
+		// m1ÂüÁ¶º¯¼ö°¡ °¡¸®Å°´Â ÀÎ½ºÅÏ½º¸¦ json¹®ÀÚ¿­·Î ¸¸µç´Ù. GSon¶óÀÌºê·¯¸®¸¦ ÀÌ¿ëÇÑ´Ù.
 		String member2Json = new Gson().toJson(m1);
 		System.out.println(member2Json);
 		
@@ -57,16 +57,16 @@ public class MemberJSONExam {
 		System.out.println(m2.getAge());
 		
 		if(m1 == m2){
-			System.out.println("m1ê³¼ m2ëŠ” ê°™ì€ ë ˆí¼ëŸ°ìŠ¤ì´ë‹¤.");
+			System.out.println("m1°ú m2´Â °°Àº ·¹ÆÛ·±½ºÀÌ´Ù.");
 		}else{
-			System.out.println("m1ê³¼ m2ëŠ” ê°™ì€ ë ˆí¼ëŸ°ìŠ¤ê°€ ì•„ë‹ˆë‹¤.");
+			System.out.println("m1°ú m2´Â °°Àº ·¹ÆÛ·±½º°¡ ¾Æ´Ï´Ù.");
 		}
 	}
 
 }
 
 
-4) jspì—ì„œ Memberê°ì²´ë¥¼ jsonìœ¼ë¡œ ë§Œë“¤ì–´ ì¶œë ¥í•œë‹¤.
+4) jsp¿¡¼­ Member°´Ã¼¸¦ jsonÀ¸·Î ¸¸µé¾î Ãâ·ÂÇÑ´Ù.
 
 json2.jsp
 
@@ -76,7 +76,7 @@ json2.jsp
 <%@page import="com.google.gson.Gson"%>
 <%
 Member m1 = new Member();
-m1.setName("í™ê¸¸ë™");
+m1.setName("È«±æµ¿");
 m1.setAge(50);
 String member2Json = new Gson().toJson(m1);
 %>
