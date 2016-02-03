@@ -13,7 +13,7 @@ $(document).ready(function() {
 		/* alert("hello"); */
 		$.ajax({
 			method: "GET",
-			mimeType: "application/json",
+			dataType: "json",
 			url: "memberJson.jsp",
 			success: function(json){
 				console.log(json);

@@ -64,7 +64,41 @@ val2 100
 
 3. cal.jsp 를 만들어서 실제로 ajax호출하여 결과를 보여준다.
 
+<%@ page language="java" contentType="text/html; charset=UTF-8"
+    pageEncoding="UTF-8"%>
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+<script src="//code.jquery.com/jquery-1.11.0.min.js"></script>
+<script>
+$(document).ready(function(){
+    $("#getResult").click(function(){
+    	var vv1 = $("#val1").val();
+    	var vv2 = $("#val2").val();
+        $.ajax({
+            type:"GET",
+            dataType:'json',
+            data: { val1: vv1, val2: vv2 },
+            url:"calact.jsp",
+            success:function(json){
+				//alert(json.value);
+				$("#value").html(json.value);
+            }
+        })    	
+    	
+    });
+});
+</script>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<title>cal</title>
+</head>
+<body>
 
+<input type="text" id="val1"> + <input type="text" id="val2"> = <b id="value"></b><br>
+<input type="button" id="getResult" value="확인">
+
+</body>
+</html>
 
 
 

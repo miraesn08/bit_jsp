@@ -10,10 +10,13 @@
 $(document).ready(function(){
 	$("#btnGetResult").click(function() {
 		console.log("click");
+		var val1 = $("#v1").val();
+		var val2 = $("#v2").val();
+		console.log("data: " + val1 + "," + val2);
 		$.ajax({
 			method: "GET",
 			url: "calact.jsp",
-			data: { v1:$("#v1").val(),v2:$("#v2").val() },
+			data: { v1:val1,v2:val2 },
 			success: function(json) {
 				console.log("ajax success");
 				if (json.errorCode==0) {
