@@ -1,0 +1,106 @@
+class Member{
+	String name;
+	int age;
+}
+------------------------------ Member class
+
+
+{"name":"홍길동","age":50}
+
+Member m = new Member();
+m.name = "홍길동";
+m.age = 50;
+
+---------------------------------------
+
+보통 자바는 라이브러리가 jar파일로 만듬.
+jar파일안에는 여러개의 class, interface등이 들어있다.
+
+gson을 사용하기로 결정. 다운로드를 한다. gson-2.5.jar
+
+1) 이클립스 다이나믹 웹 프로젝트에 다른사람이 만든 jar파일을 추가하여
+사용하려면 어떻게 하는가?
+
+WebContent/WEB-INF/lib/ 해당 폴더에 복사.
+
+WEB-INF/lib에 복사하면 웹 어플리케이션에서는 인식하는데, Java Application에서는 인식이 안된다.
+
+ 프로젝트 선택후 우측버튼클릭 -> properties 선택
+Java Build Path - Libraries 에 gson-2.5.jar를 추가  (add Jars...)
+
+
+2) 자바객체(DTO or VO) ----> json으로 만드는 라이브러리를 찾는다.
+
+3) Member객체를 json문자열로 만드는 main메소드를 가진 클래스를
+작성한다. 그래서 라이브러리를 테스트한다.
+
+
+package exam;
+
+import com.google.gson.Gson;
+
+// http://1004lucifer.blogspot.kr/2015/04/javagson-gson-java-json.html 
+// 를 참고하여 작성하였음.
+public class MemberJSONExam {
+
+	public static void main(String[] args) {
+		Member m1 = new Member();
+		m1.setName("홍길동");
+		m1.setAge(50);
+		
+		// m1참조변수가 가리키는 인스턴스를 json문자열로 만든다. GSon라이브러리를 이용한다.
+		String member2Json = new Gson().toJson(m1);
+		System.out.println(member2Json);
+		
+		Member m2 = new Gson().fromJson(member2Json, Member.class);
+		System.out.println(m2.getName());
+		System.out.println(m2.getAge());
+		
+		if(m1 == m2){
+			System.out.println("m1과 m2는 같은 레퍼런스이다.");
+		}else{
+			System.out.println("m1과 m2는 같은 레퍼런스가 아니다.");
+		}
+	}
+
+}
+
+
+4) jsp에서 Member객체를 json으로 만들어 출력한다.
+
+json2.jsp
+
+<%@ page language="java" contentType="application/json"
+    pageEncoding="UTF-8"%>
+<%@page import="exam.Member"%>
+<%@page import="com.google.gson.Gson"%>
+<%
+Member m1 = new Member();
+m1.setName("홍길동");
+m1.setAge(50);
+String member2Json = new Gson().toJson(m1);
+%>
+<%=member2Json%>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
