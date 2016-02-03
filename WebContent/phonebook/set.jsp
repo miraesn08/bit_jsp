@@ -25,7 +25,7 @@
 				
 				if (dao.setPhoneBook(vo)) {
 					result.setErrorCode(DBUtil.ERROR_CODE_OK);
-					result.setErrorMessage("success");
+					result.setErrorMessage("자료를 등록했습니다.");
 					result.setPhoneBook(vo);
 				}
 			}

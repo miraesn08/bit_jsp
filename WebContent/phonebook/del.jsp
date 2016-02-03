@@ -16,7 +16,7 @@
 		if (vo != null) {
 			if (dao.deletePhoneBook(id)) {
 				result.setErrorCode(DBUtil.ERROR_CODE_OK);
-				result.setErrorMessage("success");
+				result.setErrorMessage("자료를 삭제했습니다.");
 				result.setPhoneBook(vo);
 			} else {
 				result.setErrorCode(DBUtil.ERROR_CODE_DAO_ERROR);
