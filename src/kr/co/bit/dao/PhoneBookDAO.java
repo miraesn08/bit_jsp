@@ -68,6 +68,7 @@ public class PhoneBookDAO {
 					sql += " where " + fieldName + " like '%" + searchValue + "%'";
 				}
 			}
+			sql += " order by name";
 			ps = conn.prepareStatement(sql);
 			if (isExact) {
 				ps.setString(1, searchValue);
@@ -155,7 +156,6 @@ public class PhoneBookDAO {
 			ps.setString(1, phoneBook.getName());
 			ps.setString(2, phoneBook.getPhone());
 			ps.setInt(3, phoneBook.getId());
-			// 6.쿼리 실행
 			returnValue = (ps.executeUpdate() > 0);
 		} catch(Exception e) {
 			e.printStackTrace();
