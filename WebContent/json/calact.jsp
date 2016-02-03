@@ -1,7 +1,7 @@
 <%@ page language="java" contentType="application/json"
     pageEncoding="UTF-8"%>
-<%@ page import="test.CalResult" %>    
 <%@page import="com.google.gson.Gson"%>
+<%@page import="test.CalResult"%>
 <%
 // postman 확장 프로그램 추가
 	

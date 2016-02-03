@@ -5,9 +5,8 @@ public class CalResult {
 	private int errorCode;
 	private String errorMessage;
 	
-	public CalResult() {
-		super();
-	}
+	public CalResult() {}
+	
 	public int getResult() {
 		return result;
 	}
