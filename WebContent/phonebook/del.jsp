@@ -10,18 +10,25 @@
 
 	try {
 		int id = Integer.parseInt(request.getParameter("id"));
-		PhoneBookVO vo = new PhoneBookDAO().getPhoneBook(id);
+		
+		PhoneBookDAO dao = new PhoneBookDAO(); 
+		PhoneBookVO vo = dao.getPhoneBook(id);
 		if (vo != null) {
-			result.setErrorCode(DBUtil.ERROR_CODE_OK);
-			result.setErrorMessage("success");
-			result.setPhoneBook(vo);
+			if (dao.deletePhoneBook(id)) {
+				result.setErrorCode(DBUtil.ERROR_CODE_OK);
+				result.setErrorMessage("success");
+				result.setPhoneBook(vo);
+			} else {
+				result.setErrorCode(DBUtil.ERROR_CODE_DAO_ERROR);
+				result.setErrorMessage("관리자에게 문의 하세요.");
+			}
 		} else {
 			result.setErrorCode(DBUtil.ERROR_CODE_NO_DATA);
 			result.setErrorMessage("자료가 없습니다.");
 		}
 	} catch(Exception e) {
 		result.setErrorCode(DBUtil.ERROR_CODE_INVALID_PARAMETER);
-		result.setErrorMessage("검색 값을 확인하세요.");
+		result.setErrorMessage("삭제 값을 확인하세요.");
 	}
 
 	out.write( new Gson().toJson(result) );

@@ -115,7 +115,6 @@ public class PhoneBookDAO {
 		} catch(Exception e) {
 			e.printStackTrace();
 		} finally {
-			// 2.선언한 객체 닫기
 			DBUtil.close(conn, ps);
 		}
 		

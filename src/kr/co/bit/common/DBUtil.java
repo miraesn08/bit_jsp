@@ -11,6 +11,7 @@ public class DBUtil {
 	public static int ERROR_CODE_OK = 0;
 	public static int ERROR_CODE_NO_DATA = -1;
 	public static int ERROR_CODE_INVALID_PARAMETER = -2;
+	public static int ERROR_CODE_DAO_ERROR = -3;
 
 	// 모든 수정 후에는 반드시 test할 것.
 	// 1. db 접속(method overloading)
