@@ -7,17 +7,16 @@
 <%
 	String id = "carami";
 	MemberDAO dao = new MemberDAO();
-	MemberVO member = dao.getMember(id);	// import Ctrl+Space
+	MemberVO member = dao.getMember(id);	// import CTRL+Space
 	if (member != null) {
 		Gson gson = new Gson();
 		String json = gson.toJson(member);
 		out.write(json);
 	}
-	
-	List<MemberVO> list = dao.getMemberList();
+	/* List<MemberVO> list = dao.getMemberList();
 	if (list != null) {
 		Gson gson = new Gson();
 		String json = gson.toJson(list);
 		out.write(json);
-	}
+	} */
 %>

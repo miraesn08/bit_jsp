@@ -1,0 +1,47 @@
+
+#getMemberBtn 버튼이 클릭되면
+
+서버 json2.jsp 에게 백그라운드로 호출하여, 결과를 가지고 온다.
+
+그 결과는 json데이터이다.
+
+#name 과 #age라고 되어있는 태그 안에 json데이터의 name과 age를 넣어준다.
+
+---------------------------
+
+
+userinfo.jsp
+
+<%@ page language="java" contentType="text/html; charset=UTF-8"
+    pageEncoding="UTF-8"%>
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+<script src="//code.jquery.com/jquery-1.11.0.min.js"></script>
+<script>
+$(document).ready(function(){
+    $("#getMemberBtn").click(function(){
+        $.ajax({
+            type:"GET",
+            dataType:'json',
+            url:"json2.jsp",
+            success:function(json){
+            	// console.log(json);
+                $("#name").html(json.name);
+                $("#age").html(json.age);
+            }
+        })
+    });
+});
+</script>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<title>사용자 정보 가져오기</title>
+</head>
+<body>
+<div>
+name : <p id="name"></p><br>
+age : <p id="age"></p><br>
+<input type="button" value="읽어오기" id="getMemberBtn">
+</div>
+</body>
+</html>
