@@ -17,18 +17,26 @@ public class DBUtil {
 	// 1. db 접속(method overloading)
 	//   note: static, overloading
 	public static Connection getConnection() throws Exception {
+		// autoCommit 상태로 연결
+		return getConnection(true);
+	}
+
+	// transaction 처리를 위한 connection
+	// isAutoCommit == false : transaction 처리
+	public static Connection getConnection(boolean isAutoCommit) throws Exception {
 		String url = "jdbc:oracle:thin:@localhost:1521:XE";	
 		String user = "bit";
 		String password = "bit";
-		Connection conn = getConnection(url, user, password);
+		Connection conn = getConnection(url, user, password, isAutoCommit);
 		return conn;
 	}
-	
-	public static Connection getConnection(String url, String user, String password) throws Exception  {
+
+	public static Connection getConnection(String url, String user, String password, boolean isAutoCommit) throws Exception  {
 		// 0. 드라이버 로딩
 		Class.forName("oracle.jdbc.driver.OracleDriver");
 		// 1. DB 접속 (Connection 객체를 얻어온다.)
 		Connection conn = DriverManager.getConnection(url, user, password);
+		conn.setAutoCommit(isAutoCommit);
 		return conn;
 	}
 	
