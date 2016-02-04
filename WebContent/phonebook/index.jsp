@@ -77,16 +77,14 @@ function showList() {
 
 function makeListTable(dataList) {
 	var tag = "<table>";
-	tag += "<tr><th>ID</th><th>이름</th><th>전화번호</th><th></th></tr>";
+	tag += "<tr><th>이름</th><th>전화번호</th><th></th></tr>";
 
 	for (i = 0; i < dataList.phoneBookList.length; i++) {
 		var idValue = dataList.phoneBookList[i].id;
-		tag += "<tr>";
-			tag += "<td>" + idValue + "</td>";
+		tag += "<tr id='id" + idValue + "'>";
 			tag += "<td>" + dataList.phoneBookList[i].name + "</td>";
 			tag += "<td>" + dataList.phoneBookList[i].phone + "</td>";
-			//tag += "<td><input type='button' value='삭제' onclick='console.log(\"" + idValue + "\");'></td>";
-			tag += "<td><input type='button' value='삭제' onclick='deletePhoneBook(\"" + idValue + "\");'></td>";
+			tag += "<td><input type='button' value='삭제' class='del'></td>";
 		tag += "</tr>";
 	}
 	
