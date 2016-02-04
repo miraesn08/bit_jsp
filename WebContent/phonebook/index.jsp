@@ -1,15 +1,16 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
+<!-- 개발은 step by step으로 화면 처리는 jQuery를 이용해서 -->
+<!-- browser가 html 문서를 load한 후에 DOM(document object model)을 구성한다. -->
+<!-- jQuery는 DOM을 조작한다. --> 
+<!-- chrome의 개발자 도구에서 elements를 활용할 것. -->
 <!DOCTYPE html>
 <html>
 <head>
 <meta charset="UTF-8">
 <title>phone book list</title>
-<script src="//code.jquery.com/jquery-1.11.0.min.js"></script>
-<!-- 개발은 step by step으로 화면 처리는 jQuery를 이용해서 -->
-<!-- browser가 html 문서를 load한 후에 DOM(document object model)을 구성한다. -->
-<!-- jQuery는 DOM을 조작한다. --> 
-<!-- chrome의 개발자 도구에서 elements를 활용할 것. -->
+<script src="//code.jquery.com/jquery-1.12.0.min.js"></script>
+<script src="//code.jquery.com/jquery-migrate-1.2.1.min.js"></script>
 <script>
 $(document).ready(function(){
 	$("#btnSend").click(function(){
@@ -31,7 +32,12 @@ $(document).ready(function(){
 				  	},
 				success:function(json){
 					$("#setResult").html(json.errorMessage);
-					showList();
+					// jquery를 이용해서 동적으로 table row를 추가
+					$('#friend_table').append('<tr id="id'
+	            			+ json.phoneBook.id + '"><td>'
+	            			+ json.phoneBook.name +'</td><td>'
+	            			+ json.phoneBook.phone +'</td><td><a href="#" class="del">삭제</a></td></tr>'); 
+	            	// input text 
 					$("#name").val("");
 					$("#phone").val("");
 					$("#name").focus();
@@ -47,16 +53,37 @@ $(document).ready(function(){
 		
 	});
 	
-	$("#btnRefresh").click(function(){
-		showList();
-	});
-
-
 	showList();
 
-	$(".btnDelete").click(function(){
+    $('#friend_table').on("click", '.del', function() {
+    	console.log($(this));
+    	console.log($(this).closest('tr'));
+    	console.log($(this).closest('tr').attr('id'));
+    	//
+    	var deleteRow = $(this).closest('tr');
+    	var rowId = deleteRow.attr('id').substring(2);
+    	console.log(rowId);
+    	//
+        $.ajax({
+    		url:"del.jsp",
+    		method:"GET",
+    		url:"del.jsp",
+    		data:{ id:rowId },
+    		success:function(json){
+				deleteRow.remove();
+    			},
+    		fail:function() {
+    			$("#setResult").html("<strong>ajax 전송 오류 입니다.</strong>");
+    			}
+        });     	
+    });
+	
+	// 동적으로 생성된 element는 click 이벤트 처리할 수 없음
+	// 그리고, table은 동적으로 생성하면 되지 않는다.
+	/* $('.del').click(function(){
 		console.log("click bntDelete");
-	});
+	}); */
+
 });
 
 function showList() {
@@ -66,7 +93,6 @@ function showList() {
 		method:"GET",
 		url:"list.jsp",
 		success:function(json){
-			$("#listResult").html(json.errorMessage);
 			makeListTable(json);
 			},
 		fail:function() {
@@ -76,36 +102,15 @@ function showList() {
 }
 
 function makeListTable(dataList) {
-	var tag = "<table>";
-	tag += "<tr><th>이름</th><th>전화번호</th><th></th></tr>";
-
 	for (i = 0; i < dataList.phoneBookList.length; i++) {
 		var idValue = dataList.phoneBookList[i].id;
-		tag += "<tr id='id" + idValue + "'>";
+		var tag = "<tr id='id" + dataList.phoneBookList[i].id+ "'>";
 			tag += "<td>" + dataList.phoneBookList[i].name + "</td>";
 			tag += "<td>" + dataList.phoneBookList[i].phone + "</td>";
-			tag += "<td><input type='button' value='삭제' class='del'></td>";
+			tag += "<td><a href='#' class='del'>삭제</a></td>";
 		tag += "</tr>";
+		$('#friend_table').append(tag);		
 	}
-	
-	tag += "</table>";
-	$("#listResult").html(tag);
-}
-
-function deletePhoneBook(idValue) {
-	console.log("delete: id=" + idValue);
-	// call ajax
-	$.ajax({
-		method:"GET",
-		url:"del.jsp",
-		data:{ id:idValue },
-		success:function(json){
-			showList(json);
-			},
-		fail:function() {
-			$("#setResult").html("<strong>ajax 전송 오류 입니다.</strong>");
-			}
-	});
 }
 </script>
 <style>
@@ -126,6 +131,9 @@ function deletePhoneBook(idValue) {
 <body>
 <!-- 목록 -->
 <div id="listResult">
+	<table id='friend_table'>
+		<tr><th>이름</th><th>전화번호</th><th></th></tr>
+	</table>
 </div>
 <hr>
 <!-- 입력 -->
@@ -133,7 +141,6 @@ function deletePhoneBook(idValue) {
 	<span>이름:</span><input type="text" name="name" id="name" class="inputText"><br>
 	<span>전화번호:</span><input type="text" name="phone" id="phone" class="inputText"><br>
 	<input type="button" value="확인" id="btnSend">
-	<input type="button" value="새로고침" id="btnRefresh"><br>
 	<div id="setResult"></div>
 </div>
 </body>
