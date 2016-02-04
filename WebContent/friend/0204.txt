@@ -1,0 +1,396 @@
+create sequence friend_seq;
+create table myfriend(
+	id number primary key,
+	name varchar2(20),
+	tel varchar2(30)
+);
+
+아래의 두줄은 같은 트랜잭션안에서 동작
+insert into myfriend(id, name, tel) values(friend_seq.NEXTVAL, ?, ?);
+select friend_seq.CURRVAL from dual;
+
+
+select id, name, tel from myfriend order by id
+
+delete from myfriend where id = ?
+
+-----------------------------------------------------------------------------
+
+package kr.co.bit.common;
+
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+
+public class DBUtil {
+	// 1. 디비접속 하는 메서드
+	public static Connection getConnection(boolean transaction) throws Exception {		
+		String url = "jdbc:oracle:thin:@127.0.0.1:1521:XE";
+		String user = "bit";
+		String password = "bit";
+		Connection conn = getConnection(url, user, password);
+		conn.setAutoCommit(transaction);
+		return conn;
+	}
+	
+	public static Connection getConnection() throws Exception {		
+		String url = "jdbc:oracle:thin:@127.0.0.1:1521:XE";
+		String user = "bit";
+		String password = "bit";
+		Connection conn = getConnection(url, user, password);
+		return conn;
+	}
+
+	public static Connection getConnection(String url, String user, String password) throws Exception {
+		// 0.드라이버로딩
+		Class.forName("oracle.jdbc.driver.OracleDriver");
+		// 1. DB접속 (Connection 객체를 얻어온다.)
+		Connection conn = DriverManager.getConnection(url, user, password);
+		return conn;
+	}
+
+	// 2. 디비접속한 자원을 닫아주는 메서드
+	public static void close(Connection conn, PreparedStatement ps, ResultSet rs){
+		if(rs != null){
+			try {
+				rs.close();
+			} catch (SQLException e) {
+				e.printStackTrace();
+			}
+		}
+		close(conn, ps);
+	}
+	public static void close(Connection conn, PreparedStatement ps){
+		//2.선언한 객체 닫기.
+		if(ps != null){
+			try {
+				ps.close();
+			} catch (SQLException e) {
+				e.printStackTrace();
+			}
+		}
+		if(conn != null){
+			try {
+				conn.close();
+			} catch (SQLException e) {
+				e.printStackTrace();
+			}
+		}
+	}
+}
+
+-------------------------------------------------
+
+package exam;
+
+public class FriendDTO {
+	private int id;
+	private String name;
+	private String tel;
+	
+	public FriendDTO() {
+		super();
+	}
+	public FriendDTO(int id, String name, String tel) {
+		super();
+		this.id = id;
+		this.name = name;
+		this.tel = tel;
+	}
+	public int getId() {
+		return id;
+	}
+	public void setId(int id) {
+		this.id = id;
+	}
+	public String getName() {
+		return name;
+	}
+	public void setName(String name) {
+		this.name = name;
+	}
+	public String getTel() {
+		return tel;
+	}
+	public void setTel(String tel) {
+		this.tel = tel;
+	}
+	@Override
+	public String toString() {
+		return "FriendDTO [id=" + id + ", name=" + name + ", tel=" + tel + "]";
+	}
+	@Override
+	public int hashCode() {
+		final int prime = 31;
+		int result = 1;
+		result = prime * result + id;
+		return result;
+	}
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj)
+			return true;
+		if (obj == null)
+			return false;
+		if (getClass() != obj.getClass())
+			return false;
+		FriendDTO other = (FriendDTO) obj;
+		if (id != other.id)
+			return false;
+		return true;
+	}
+	
+}
+
+-----------------------------------------------
+
+package exam;
+
+import java.util.List;
+
+public interface FriendDAO {
+	public List<FriendDTO> getList();
+	public FriendDTO addFriend(String name, String tel);
+	public int deleteFriend(int id);
+}
+
+---------------------------------------------------
+
+package exam;
+
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.List;
+
+import kr.co.bit.common.DBUtil;
+import kr.co.bit.vo.GuestBookVO;
+
+public class FriendDAOImpl implements FriendDAO {
+
+	@Override
+	public List<FriendDTO> getList() {
+		List<FriendDTO> friendList = new ArrayList<>();
+		Connection conn = null;
+		PreparedStatement ps = null;
+		ResultSet rs = null;
+		try{
+			conn = DBUtil.getConnection();
+			String sql = "select id, name, tel from myfriend order by id";
+			ps = conn.prepareStatement(sql);
+			rs = ps.executeQuery();
+			while(rs.next()){
+				FriendDTO dto = new FriendDTO();
+				dto.setId(rs.getInt(1));
+				dto.setName(rs.getString(2));
+				dto.setTel(rs.getString(3));
+				friendList.add(dto);
+			}
+		}catch(Exception e){
+			e.printStackTrace();
+		}finally {
+			DBUtil.close(conn, ps,rs);
+		}
+		
+		return friendList;
+	}
+
+	@Override
+	public FriendDTO addFriend(String name, String tel) {
+		FriendDTO friend = new FriendDTO();
+		friend.setName(name);
+		friend.setTel(tel);
+		int resultCount = 0;
+		Connection conn = null;
+		PreparedStatement ps = null;
+		PreparedStatement ps2 = null;
+		ResultSet rs = null;
+		try {
+			conn = DBUtil.getConnection(false);
+			String sql = "insert into myfriend(id, name, tel) values(friend_seq.NEXTVAL, ?, ?)";
+			ps = conn.prepareStatement(sql);
+			ps.setString(1, name);
+			ps.setString(2, tel);
+			resultCount = ps.executeUpdate();
+			sql = "select friend_seq.CURRVAL from dual";
+			ps2 = conn.prepareStatement(sql);
+			rs = ps2.executeQuery();
+			rs.next(); // 무조건 한건 읽어온다.
+			int id = rs.getInt(1);
+			friend.setId(id);
+		} catch (Exception e) {
+			e.printStackTrace();
+		} finally {
+			try {
+				rs.close();
+			} catch (SQLException e) {
+				e.printStackTrace();
+			}
+			try {
+				ps2.close();
+			} catch (SQLException e) {
+				e.printStackTrace();
+			}
+			DBUtil.close(conn, ps);
+		}
+		return friend;
+	}
+
+	@Override
+	public int deleteFriend(int id) {
+		int resultCount = 0;
+		Connection conn = null;
+		PreparedStatement ps = null;
+		try{
+			conn = DBUtil.getConnection();
+			String sql = "delete from myfriend where id = ?";
+			ps = conn.prepareStatement(sql);
+			ps.setInt(1, id);
+			resultCount = ps.executeUpdate();			
+		}catch(Exception e){
+			e.printStackTrace();
+		}finally {
+			DBUtil.close(conn, ps);
+		}
+		return resultCount;
+	}
+
+	
+}
+---------------------------------------------------
+
+addfriend.jsp
+
+<%@page import="com.google.gson.Gson"%>
+<%@page import="exam.FriendDAOImpl"%>
+<%@page import="exam.FriendDAO"%>
+<%@page import="exam.FriendDTO"%>
+<%@page import="kr.co.bit.dao.GuestBookDAO"%>
+<%@ page language="java" contentType="application/json"
+    pageEncoding="UTF-8"%>
+<%
+	try{
+		String name = request.getParameter("name");
+		String tel = request.getParameter("tel");
+		FriendDAO dao = new FriendDAOImpl();
+		FriendDTO dto = dao.addFriend(name, tel);
+		String dtostr = new Gson().toJson(dto);
+		out.println(dtostr);
+	}catch(Exception ex){
+		out.println("{\"result\":\"fail\"}");
+	}
+%>
+
+
+------------------------------------------------
+
+deletefriend.jsp
+
+<%@page import="exam.FriendDAOImpl"%>
+<%@page import="exam.FriendDAO"%>
+<%@page import="kr.co.bit.dao.GuestBookDAO"%>
+<%@ page language="java" contentType="application/json"
+    pageEncoding="UTF-8"%>
+<%
+	try{
+		String idStr = request.getParameter("id");
+		System.out.println(idStr);
+		int id = Integer.parseInt(idStr);
+		FriendDAO dao = new FriendDAOImpl();
+		dao.deleteFriend(id);
+		out.println("{\"result\":\"ok\"}");
+	}catch(Exception ex){
+		out.println("{\"result\":\"fail\"}");
+	}
+%>
+
+----------------------------------------
+friendlist.jsp
+
+<%@page import="exam.FriendDTO"%>
+<%@page import="java.util.List"%>
+<%@page import="exam.FriendDAOImpl"%>
+<%@page import="exam.FriendDAO"%>
+<%@ page language="java" contentType="text/html; charset=UTF-8"
+    pageEncoding="UTF-8"%>
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+<script src="//code.jquery.com/jquery.min.js"></script>
+<script>
+$(function() {
+
+    $('.del').on("click", function() {
+    	//console.log(this);
+    	//alert($(this).parent().attr('id'));
+    	var rowid = $(this).parent().attr('id').substring(2);
+    	var deleteRow = $(this).parent();
+    	// ajax로 rowid를 전달하여 삭제하라고 부탁한다.
+        $.ajax({
+            type:"GET",
+            dataType:'json',
+            data: { id: rowid },
+            url:"deletefriend.jsp",
+            success:function(json){
+				deleteRow.remove();
+            }
+        });     	
+    });
+    
+    $('#addFried').click(function(){
+    	var name = $('#name').val();
+    	var tel = $('#tel').val();
+    	// ajax로 name, tel정보로 insert를 부탁
+    	// insert가 성공하면, 새로운 row를 추가한다. (id, name, tel)
+         $.ajax({
+            type:"GET",
+            dataType:'json',
+            data: { name: name, tel: tel },
+            url:"addfriend.jsp",
+            success:function(json){
+            	var tbl = $('#friend_table');
+            	$(tbl).find('tr:last').after('<tr id="id' + json.id + '"><th>'+ json.name +'</th><th>'+ json.tel +'</th><th class="del">삭제</th></tr>');
+            }
+        });      	
+    });
+});
+</script>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<title>Insert title here</title>
+</head>
+<body>
+<table border="1" width="700" id="friend_table">
+<tr>
+	<th>이름</th><th>전화번호</th><th>삭제</th>
+</tr>
+<%
+	FriendDAO dao = new FriendDAOImpl();
+	List<FriendDTO> list = dao.getList();
+	for(int i = 0; i < list.size(); i++){
+		FriendDTO friend = list.get(i);
+%>
+<tr id="id<%=friend.getId()%>">
+	<td><%=friend.getName()%></td><td><%=friend.getTel()%></td><td class="del">삭제</td>
+</tr>	
+<%
+	} // for
+%>
+</table>
+<br>
+<br>
+<br>
+이름 : <input type="text" id="name"><br>
+전화번호 :<input type="text" id="tel"><br>
+<input type="button" value="확인" id="addFried">
+<br>
+
+<div  id="tmp_row">
+
+</div>
+</body>
+</html>
+

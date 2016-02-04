@@ -6,6 +6,10 @@
 <meta charset="UTF-8">
 <title>phone book list</title>
 <script src="//code.jquery.com/jquery-1.11.0.min.js"></script>
+<!-- 개발은 step by step으로 화면 처리는 jQuery를 이용해서 -->
+<!-- browser가 html 문서를 load한 후에 DOM(document object model)을 구성한다. -->
+<!-- jQuery는 DOM을 조작한다. --> 
+<!-- chrome의 개발자 도구에서 elements를 활용할 것. -->
 <script>
 $(document).ready(function(){
 	$("#btnSend").click(function(){
