@@ -12,14 +12,15 @@ public class PhoneBookDAOTest {
 		PhoneBookDAO dao = new PhoneBookDAO();
 		
 		// insert
-		/*vo.setName("성춘향");
-		vo.setPhone("010-1237-6542");
+		vo.setName("삼월이");
+		vo.setPhone("010-3852-1234");
 		
 		if (dao.setPhoneBook(vo)) {
+			System.out.println(vo);
 			System.out.println("insert ok");
 		} else {
 			System.out.println("insert fail");
-		}*/
+		}
 
 		// get
 		/*System.out.println("> get PhoneBook ------------------------------");

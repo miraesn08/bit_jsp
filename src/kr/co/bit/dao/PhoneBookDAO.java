@@ -68,7 +68,7 @@ public class PhoneBookDAO {
 					sql += " where " + fieldName + " like '%" + searchValue + "%'";
 				}
 			}
-			sql += " order by name";
+			sql += " order by id";
 			ps = conn.prepareStatement(sql);
 			if (isExact) {
 				ps.setString(1, searchValue);
@@ -103,9 +103,11 @@ public class PhoneBookDAO {
 
 		Connection conn = null;
 		PreparedStatement ps = null;
+		PreparedStatement ps2 = null;
+		ResultSet rs = null;
 		
 		try {
-			conn = DBUtil.getConnection();
+			conn = DBUtil.getConnection(true);
 			
 			String sql = "insert into phoneBook values (phonebook_seq.nextval,?,?,sysdate)";
 			ps = conn.prepareStatement(sql);
@@ -113,6 +115,13 @@ public class PhoneBookDAO {
 			ps.setString(2, phoneBook.getPhone());
 			
 			returnValue = (ps.executeUpdate() == 1);
+			
+			sql = "select phonebook_seq.CURRVAL from dual";
+			ps2 = conn.prepareStatement(sql);
+			rs = ps2.executeQuery();
+			rs.next(); // 무조건 한건 읽어온다.
+			int id = rs.getInt(1);
+			phoneBook.setId(id);
 		} catch(Exception e) {
 			e.printStackTrace();
 		} finally {
