@@ -42,6 +42,11 @@ public class FriendDTO {
 	}
 
 	@Override
+	public String toString() {
+		return "FriendDTO [id=" + id + ", name=" + name + ", tel=" + tel + "]";
+	}
+
+	@Override
 	public int hashCode() {
 		final int prime = 31;
 		int result = 1;
