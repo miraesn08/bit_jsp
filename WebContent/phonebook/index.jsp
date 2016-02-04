@@ -28,6 +28,9 @@ $(document).ready(function(){
 				success:function(json){
 					$("#setResult").html(json.errorMessage);
 					showList();
+					$("#name").val("");
+					$("#phone").val("");
+					$("#name").focus();
 					},
 				fail:function() {
 					$("#setResult").html("<strong>ajax 전송 오류 입니다.</strong>");
