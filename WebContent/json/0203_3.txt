@@ -1,0 +1,107 @@
+http://cafe.naver.com/happyprogramming
+
+즐거운자바
+
+
+cal.jsp
+
+
+______ + _______ =    
+
+확인
+
+
+calact.jsp 에게 2개의 값을 ajax로 넘긴다. jquery ajax함수사용법을 공부.
+javascript로 2개의 값을 전달할 수 있어야 한다.
+
+
+calact.jsp?v1=50&v2=60 : 서버입장으로 봤을때는 2개의 파라미터가 전달되는 것이다.
+
+2개의 파라미터를 읽어들인다. (문자열) ---> 정수로 변환
+
+정수로 변환된 값을 json 데이터로 변환  { "result" : 더한값 }
+
+ajax호출이 성공하면  = 뒤에 값을 출력한다.
+
+-----------------------------------------------------------------------
+1. calact.jsp 를 만들었다.
+
+<%@page import="exam.Result"%>
+<%@ page language="java" contentType="application/json"
+    pageEncoding="UTF-8"%>
+<%@page import="com.google.gson.Gson"%>    
+<%
+	String val1 = request.getParameter("val1");
+	String val2 = request.getParameter("val2");
+	System.out.println(val1 + "," + val2);
+	Result result = new Result();
+	try{
+		int ival1 = Integer.parseInt(val1);
+		int ival2 = Integer.parseInt(val2);
+		int value = ival1 + ival2;
+		result.setValue(value);
+	}catch(Exception ex){
+		result.setErrorCode(-1);
+		result.setErrorStr(ex.toString());
+	}
+	String jsonStr = new Gson().toJson(result);
+%>
+<%=jsonStr%>
+
+2. postman을 설치 아래와 같이 실행한다.
+
+chrome://apps/
+
+URL : http://localhost/firstWeb/calact.jsp
+GET방식 선택
+Form을 선택
+val1 50
+val2 100
+
+을 설정한다.
+
+-----------------------------------------------------------------------
+
+3. cal.jsp 를 만들어서 실제로 ajax호출하여 결과를 보여준다.
+
+<%@ page language="java" contentType="text/html; charset=UTF-8"
+    pageEncoding="UTF-8"%>
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+<script src="//code.jquery.com/jquery-1.11.0.min.js"></script>
+<script>
+$(document).ready(function(){
+    $("#getResult").click(function(){
+    	var vv1 = $("#val1").val();
+    	var vv2 = $("#val2").val();
+        $.ajax({
+            type:"GET",
+            dataType:'json',
+            data: { val1: vv1, val2: vv2 },
+            url:"calact.jsp",
+            success:function(json){
+				//alert(json.value);
+				$("#value").html(json.value);
+            }
+        })    	
+    	
+    });
+});
+</script>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<title>cal</title>
+</head>
+<body>
+
+<input type="text" id="val1"> + <input type="text" id="val2"> = <b id="value"></b><br>
+<input type="button" id="getResult" value="확인">
+
+</body>
+</html>
+
+
+
+
+
+
